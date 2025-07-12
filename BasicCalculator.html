@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Basic Calculator</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <style>
+
+        .calculator {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 400px; padding: 20px 0; 
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            background: #222;
+        }
+        #display {
+            width: 80%; height: 100px;
+            padding: 20px; margin: 20px; 
+            overflow-x: auto; 
+            overflow-y: hidden;
+            border-radius: 10px; 
+            font-size: 28px; 
+            text-align: right;
+            color: #0f0;
+            background: #111;
+        }
+        button {
+            padding: 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #444;
+        }
+        .box{
+            width: 70px;
+            height: 60px;
+            border-radius: 10px;
+        }
+        .box_2{
+            width: 100%; 
+            height: 70px;
+        }
+        .operator {
+            background: #f39c12;
+            color: #fff;
+        }.equal {
+            background: #27ae60;
+            color: white;
+            grid-column: span 2;
+        }
+        .clear {
+            background: #e74c3c;
+            color: white;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="calculator">
+        <div id="display">
+            0
+        </div>
+        <div class="box_2">
+            <button class="box clear" onclick="clearDisplay()" style="position: absolute; left: 20px;">
+                AC
+            </button>
+            <button class="box operator" onclick="append('%')" style="position: absolute; left: 115px;">
+                %
+            </button>
+            <button class="box operator" onclick="append('/')" style="position: absolute; left: 210px;">
+                /
+            </button>
+            <button class="box operator" onclick="append('*')" style="position: absolute; left: 305px;">
+                X
+            </button>
+        </div>
+        <div class="box_2">
+            <button class="box" onclick="append('7')" style="position: absolute; left: 20px;">
+                7
+            </button>
+            <button class="box" onclick="append('8')" style="position: absolute; left: 115px;">
+                8
+            </button>
+            <button class="box" onclick="append('9')" style="position: absolute; left: 210px;">
+                9
+            </button>
+            <button class="box" onclick="append('-')" style="position: absolute; left: 305px;">
+                -
+            </button>
+        </div>
+        <div class="box_2">
+            <button class="box" onclick="append('4')" style="position: absolute; left: 20px;">
+                4
+            </button>
+            <button class="box" onclick="append('5')" style="position: absolute; left: 115px;">
+                5
+            </button>
+            <button class="box" onclick="append('6')" style="position: absolute; left: 210px;">
+                6
+            </button>
+            <button class="box" onclick="append('+')" style="position: absolute; left: 305px; height: 130px;">
+                +
+            </button>
+        </div>
+        <div class="box_2">
+            <button class="box" onclick="append('1')" style="position: absolute; left: 20px;">
+                1
+            </button>
+            <button class="box" onclick="append('2')" style="position: absolute; left: 115px;">
+                2
+            </button>
+            <button class="box" onclick="append('3')" style="position: absolute; left: 210px;">
+                3
+            </button>
+        </div>
+        <div class="box_2">
+            <button class="box" onclick="append('0')" style="position: absolute; left: 20px;">
+                0
+            </button>
+            <button class="box" onclick="append('.')" style="position: absolute; left: 115px;">
+                .
+            </button>
+            <button class="box equal" onclick="calculate()" style="position: absolute; left: 210px; width: 165px;">
+                =
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display')
+        let currentInput = ''
+        
+        function append(value) {
+            if (display.textContent === '0' && value !== '.') {
+                currentInput = '';
+            }
+            currentInput += value
+            display.textContent = currentInput
+        }
+        function clearDisplay() {
+            currentInput = ''
+            display.textContent = '0'
+        }
+        function erase() {
+            currentInput = currentInput.slice(0, -1);
+            display.textContent = currentInput || '0';
+        }
+        function calculate() {
+            try {
+                currentInput = eval(currentInput).toString();
+                display.textContent = currentInput;
+            } catch {
+                display.textContent = 'Error';
+                currentInput = '';
+            }
+            }
+
+        document.addEventListener('keydown', function (event) {
+            const key = event.key;
+            if (!isNaN(key) || ['+', '-', '*', '/', '%', '.'].includes(key)) {
+                append(key);
+            } else if (key === 'Enter') {
+                event.preventDefault();
+                calculate();
+            } else if (key === 'Backspace') {
+                erase()
+                display.textContent = currentInput || '0';
+            } else if (key.toLowerCase() === 'c') {
+                clearDisplay();
+            }
+            });
+
+    </script>
+   
+</body>
+</html>
